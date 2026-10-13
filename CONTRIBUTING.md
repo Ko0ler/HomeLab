@@ -6,7 +6,7 @@ This is a personal home lab used to practice networking, systems administration 
 
 If you spot a config error, a factual mistake in the documentation, or a security concern in how something is described, please open an issue with:
 
-- Which file is affected (`README.md`, a config under `configs/`, etc.)
+- Which file is affected (`README.md`, a config under `Appliances configs/`, etc.)
 - What's wrong, and what you'd expect instead
 - Any relevant command output or reference, if applicable
 
@@ -26,4 +26,4 @@ Out of scope for this repo: unrelated tooling, generic networking tutorials, or 
 
 ## Code of conduct
 
-Be respectful and constructive. This is a learning project — questions and "why did you do it this way" discussions are genuinely welcome.
+Be respectful and constructive. This is a learning project — questions and "why did you do it this way" discussions are genuinely welcome. 😉
