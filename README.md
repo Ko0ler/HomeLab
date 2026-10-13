@@ -16,7 +16,7 @@ Chain: **Kali/Exegol + NAT (Switch-X)** → **Router** → **ASAv Firewall** (wi
 | Router ↔ FW outside | 10.10.3.0/29 | Router .1, ASA outside .2 |
 | FW ↔ DMZ | 10.10.2.0/30 | ASA dmz .2, Ubuntu .1 |
 | FW ↔ SW-L3 (inside) | 10.10.1.0/30 | ASA inside .2, SW-L3 .1 |
-| VLAN 30 | 192.168.30.0/24 | PC1, PC2 |
+| VLAN 30 | 192.168.30.0/24 | PC-C, PC-D |
 | VLAN 40 | 192.168.40.0/24 | behind L2-SW-2 — Windows 10, PC-B |
 | VLAN 50 | 192.168.50.0/24 | behind L2-SW-1 — Windows Server 2025 (DC01), PC-A |
 | VLAN 100 | 192.168.100.0/24 | SVI present on SW-L3; trunked, not yet in ASA object group |
@@ -31,7 +31,7 @@ Trunk links SW-L3 ↔ L2-SW-1/L2-SW-2 carry VLANs 30, 40, 50, 100 (native VLAN 9
 | FW | Perimeter firewall, DMZ | Cisco ASAv 9.22(1)1 | outside 10.10.3.2/29; dmz 10.10.2.2/30; inside 10.10.1.2/30 |
 | SW-L3 | Core L3 switch, inter-VLAN routing | Cisco IOSv L2 15.2 | Gi0/0 10.10.1.1/30 (to FW); Gi0/1-0/2 trunks to L2-SW-1/2; SVIs for VLAN 30/40/50/100 |
 | L2-SW-1 | Access switch | Cisco IOSv L2 15.2 | VLAN 50 access ports (WinServer2025, PC-A) |
-| L2-SW-2 | Access switch | Cisco IOSv L2 15.2 | VLAN 40 access ports (Windows 10, PC-B); VLAN 30 (PC2) |
+| L2-SW-2 | Access switch | Cisco IOSv L2 15.2 | VLAN 40 access ports (Windows 10, PC-B); VLAN 30 (PC-D) |
 
 ASAv is licensed under Smart Licensing Using Policy, running in Evaluation Mode with feature tier **standard** and throughput level **1G** declared locally (no CSSM registration).
 
@@ -46,10 +46,8 @@ ASAv is licensed under Smart Licensing Using Policy, running in Evaluation Mode 
 | Windows 10 | Windows 10 | PC1 | DHCP (VLAN 40) | Domain-joined workstation |
 | PC-A | VPCS | — | VLAN 50 (.15) | — |
 | PC-B | VPCS | — | VLAN 40 (.15) | — |
-| PC1 (VPCS) | VPCS | — | VLAN 30 (.1) | — |
-| PC2 | VPCS | — | VLAN 30 (.2) | — |
-
-> Note: both a Windows 10 VM (hostname PC1) and a VPCS node labeled "PC1" exist in this lab — the Windows 10 VM sits on VLAN 40 via L2-SW-2, while VPCS PC1 sits on VLAN 30 via L2-SW-1. Worth renaming one to avoid confusion during engagements.
+| PC-C | VPCS | — | VLAN 30 (.1) | — |
+| PC-D | VPCS | — | VLAN 30 (.2) | — |
 
 ## Active Directory (kooler.local)
 
