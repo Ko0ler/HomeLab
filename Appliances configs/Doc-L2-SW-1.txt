@@ -1,0 +1,33 @@
+!
+hostname L2-SW-1
+!
+interface GigabitEthernet0/0
+ switchport trunk native vlan 999
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ switchport access vlan 50
+ switchport mode access
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ switchport access vlan 50
+ switchport mode access
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ switchport access vlan 30
+ switchport mode access
+ negotiation auto
+!
+interface GigabitEthernet1/0
+ switchport access vlan 50
+ switchport mode access
+ negotiation auto
+!
+vtp mode client
+vtp domain KO0LER
+!
+

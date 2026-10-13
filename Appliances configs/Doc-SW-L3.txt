@@ -1,0 +1,46 @@
+!
+hostname SW-L3
+!
+ip routing
+!
+interface GigabitEthernet0/0
+ no switchport
+ ip address 10.10.1.1 255.255.255.252
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ switchport trunk allowed vlan 30,40,50,100
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ switchport trunk allowed vlan 30,40,50,100
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ negotiation auto
+!
+!
+interface Vlan30
+ ip address 192.168.30.254 255.255.255.0
+ ip helper-address 192.168.50.10
+!
+interface Vlan40
+ ip address 192.168.40.254 255.255.255.0
+ ip helper-address 192.168.50.10
+!
+interface Vlan50
+ ip address 192.168.50.254 255.255.255.0
+ ip helper-address 192.168.50.10
+!
+interface Vlan100
+ ip address 192.168.100.254 255.255.255.0
+!
+!
+ip route 0.0.0.0 0.0.0.0 10.10.1.2
+!
+vtp mode server
+vtp domain KO0LER
+!

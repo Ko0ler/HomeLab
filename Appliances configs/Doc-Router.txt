@@ -1,0 +1,33 @@
+hostname Router
+!
+interface GigabitEthernet0/0
+ ip address 10.10.3.1 255.255.255.248
+ duplex auto
+ speed auto
+ media-type rj45
+ no shut
+!
+interface GigabitEthernet0/1
+ ip address 192.168.160.100 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+ no shut
+!
+interface GigabitEthernet0/2
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/3
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+ip route 0.0.0.0 0.0.0.0 192.168.160.2
+ip route 10.10.0.0 255.255.0.0 10.10.3.2
+!

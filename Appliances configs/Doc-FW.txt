@@ -1,0 +1,108 @@
+!
+! SECTION 1: INTERFACE & SECURITY ZONE CONFIGURATION
+!
+! Outside / Upstream Router link
+interface GigabitEthernet0/2
+ nameif outside
+ security-level 0
+ ip address 10.10.3.2 255.255.255.248
+ no shutdown
+!
+! DMZ Segment (Isolated Servers / Ubuntu)
+interface GigabitEthernet0/1
+ nameif dmz
+ security-level 50
+ ip address 10.10.2.2 255.255.255.252
+ no shutdown
+!
+! Inside Segment (Downstream Core Layer 3 Switch)
+interface GigabitEthernet0/0
+ nameif inside
+ security-level 100
+ ip address 10.10.1.2 255.255.255.252
+ no shutdown
+!
+
+!
+! SECTION 2: OBJECT DEFINITIONS & NETWORK MAPPING
+!
+! Define downstream subnets routed via SW-L3
+object-group network INSIDE_SUBNETS
+ network-object 192.168.30.0 255.255.255.0
+ network-object 192.168.40.0 255.255.255.0
+ network-object 192.168.50.0 255.255.255.0
+!
+! Define DMZ Assets
+object network DMZ_UBUNTU_SERVER
+ host 10.10.2.1
+object network DMZ_MAPPED
+ host 10.10.3.3
+!
+
+!
+! SECTION 3: ROUTING CONSTRAINTS
+!
+! Default route pointing upstream to the edge router
+route outside 0.0.0.0 0.0.0.0 10.10.3.1 1
+!
+! Static route for all internal corporate subnets pointing to the L3 Switch
+route inside 192.168.30.0 255.255.255.0 10.10.1.1 1
+route inside 192.168.40.0 255.255.255.0 10.10.1.1 1
+route inside 192.168.50.0 255.255.255.0 10.10.1.1 1
+!
+
+!
+! SECTION 4: NETWORK ADDRESS TRANSLATION (NAT/PAT)
+!
+! Dynamically translate all internal corporate subnets to the outside interface IP for outbound traffic
+nat (inside,outside) source dynamic INSIDE_SUBNETS interface
+!
+! Dynamically translate DMZ assets to the outside interface IP for outbound updates
+nat (dmz,outside) source static DMZ_UBUNTU_SERVER DMZ_MAPPED
+!
+
+!
+! SECTION 5: ACCESS CONTROL LISTS (ACL) & TRAFFIC POLICIES
+!
+! --- INSIDE INBOUND ACL ---
+! Permit internal endpoints to access the DMZ server (e.g., SSH, Web, Admin)
+access-list INSIDE_INbound extended permit ip object-group INSIDE_SUBNETS object DMZ_UBUNTU_SERVER
+! Permit internal endpoints to go out to the Internet
+access-list INSIDE_INbound extended permit ip object-group INSIDE_SUBNETS any
+access-group INSIDE_INbound in interface inside
+
+! --- DMZ INBOUND ACL ---
+! Restrict DMZ infrastructure from initiating any connections back into internal subnets
+access-list DMZ_INbound extended deny ip object DMZ_UBUNTU_SERVER object-group INSIDE_SUBNETS
+! Allow DMZ server outward access to internet for updates/patches (HTTP/HTTPS/DNS)
+access-list DMZ_INbound extended permit tcp object DMZ_UBUNTU_SERVER any eq www
+access-list DMZ_INbound extended permit tcp object DMZ_UBUNTU_SERVER any eq https
+access-list DMZ_INbound extended permit udp object DMZ_UBUNTU_SERVER any eq domain
+access-list DMZ_INbound extended permit icmp object DMZ_UBUNTU_SERVER any
+access-group DMZ_INbound in interface dmz
+
+! --- OUTSIDE INBOUND ACL ---
+! Default deny rule implicitly blocks unauthorized outside-to-inside traffic.
+! Add explicit rules here if the DMZ Ubuntu server needs to host public-facing services.
+access-list OUTSIDE_INbound extended permit icmp any object DMZ_UBUNTU_SERVER
+access-list OUTSIDE_INbound extended permit tcp any object DMZ_UBUNTU_SERVER eq www
+access-list OUTSIDE_INbound extended permit tcp any object DMZ_UBUNTU_SERVER eq https
+access-list OUTSIDE_INbound extended permit udp any object DMZ_UBUNTU_SERVER eq http
+access-list OUTSIDE_INbound extended permit icmp any object DMZ_UBUNTU_SERVER
+access-list OUTSIDE_INbound extended permit tcp any object DMZ_UBUNTU_SERVER eq 8080
+access-list OUTSIDE_INbound extended permit tcp any object DMZ_UBUNTU_SERVER eq 8070
+access-list OUTSIDE_INbound extended permit tcp any object DMZ_UBUNTU_SERVER eq 8060
+access-group OUTSIDE_INbound in interface outside
+
+!
+! SECTION 6: GLOBAL PACKET INSPECTION
+!
+! Enable global inspection engine for stateful tracking of common application protocols
+!policy-map global_policy
+! class inspection_default
+!  inspect icmp
+!  inspect http
+!  inspect ftp
+!
+!service-policy global_policy global
+!
