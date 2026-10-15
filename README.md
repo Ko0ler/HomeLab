@@ -4,7 +4,7 @@
 
 ## Overview
 
-HomeLab is a GNS3 lab built on a single laptop (OMEN 16, i7-14650HX, 32 GB RAM, RTX 4060 8 GB) to practice networking, systems administration and offensive security in one environment. It models a perimeter with a DMZ (Cisco ASAv), a routed core (SW-L3 + two access switches), and an Active Directory domain **kooler.local** running on Windows Server 2025. Attacker platforms (Kali, ParrotOS/Exegol) sit on the untrusted outside segment alongside a NAT gateway to the internet.
+HomeLab is a GNS3 lab built on a single laptop (OMEN 16, i7-14650HX, 32 GB RAM, RTX 4060 8 GB) to practice networking, systems administration and offensive security in one environment. It models a perimeter with a DMZ (Cisco ASAv), a routed core (SW-L3 + two access switches), and an Active Directory domain **kooler.local** running on Windows Server 2025. Attacker platforms (Kali, Exegol) sit on the untrusted outside segment alongside a NAT gateway to the internet. The number of assets, host types, and configured services are higly based on my host specs to allow running the entire environment at once without the PC sweating too much. So customize yours as needed.
 
 ## Network Topology & Addressing
 
@@ -13,13 +13,13 @@ Chain: **Kali/Exegol + NAT (Switch-X)** → **Router** → **ASAv Firewall** (wi
 | Segment | Subnet | Notes |
 | --- | --- | --- |
 | Outside / untrusted | 192.168.160.0/24 | Switch-X: Kali/Exegol, NAT cloud; Router at .100 |
-| Router ↔ FW outside | 10.10.3.0/29 | Router .1, ASA outside .2 |
+| Router ↔ FW outside | 10.10.3.0/29 | Router .1, ASA outside .2, DMZ NAT .3 |
 | FW ↔ DMZ | 10.10.2.0/30 | ASA dmz .2, Ubuntu .1 |
 | FW ↔ SW-L3 (inside) | 10.10.1.0/30 | ASA inside .2, SW-L3 .1 |
-| VLAN 30 | 192.168.30.0/24 | PC-C, PC-D |
-| VLAN 40 | 192.168.40.0/24 | behind L2-SW-2 — Windows 10, PC-B |
-| VLAN 50 | 192.168.50.0/24 | behind L2-SW-1 — Windows Server 2025 (DC01), PC-A |
-| VLAN 100 | 192.168.100.0/24 | SVI present on SW-L3; trunked, not yet in ASA object group |
+| VLAN 30 (VPCS) | 192.168.30.0/24 | PC-C, PC-D |
+| VLAN 40 (Workstations) | 192.168.40.0/24 | behind L2-SW-2 — Windows 10, PC-B |
+| VLAN 50 (Servers) | 192.168.50.0/24 | behind L2-SW-1 — Windows Server 2025 (DC01), PC-A |
+| VLAN 100 (Mngmt) | 192.168.100.0/24 | SVI present on SW-L3; trunked, not yet in ASA object group |
 
 Trunk links SW-L3 ↔ L2-SW-1/L2-SW-2 carry VLANs 30, 40, 50, 100 (native VLAN 999, dot1q).
 
@@ -34,6 +34,7 @@ Trunk links SW-L3 ↔ L2-SW-1/L2-SW-2 carry VLANs 30, 40, 50, 100 (native VLAN 9
 | L2-SW-2 | Access switch | Cisco IOSv L2 15.2 | VLAN 40 access ports (Windows 10, PC-B); VLAN 30 (PC-D) |
 
 ASAv is licensed under Smart Licensing Using Policy, running in Evaluation Mode with feature tier **standard** and throughput level **1G** declared locally (no CSSM registration).
+VPCS mainly used for connectivity testing.
 
 ## Host Inventory
 
@@ -81,11 +82,11 @@ Tracked in [CHANGELOG.md](Docs/CHANGELOG.md).
 
 Lab credentials are intentionally **not committed** to this repository.
 
-| Scope | Account | Host |
+| Scope | Account | Hostname |
 | --- | --- | --- |
-| Local | kali | Kali |
+| Local | kali | ko0ler-VMware-Virtual-Platform (Kali) |
 | Local | ko0ler | Ubuntu |
-| Local | ko0ler | Windows 10 (PC1) |
-| Local | Administrator | DC01 |
+| Local | ko0ler | PC1 (Windows 10) |
+| Local | Administrator | DC01 (WindowsServer 2025) |
 | Domain (kooler.local) | Ko0ler | — |
 | Domain (kooler.local) | user1 | — |
