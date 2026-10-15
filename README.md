@@ -4,9 +4,9 @@
 
 ## Overview
 
-HomeLab is a GNS3 lab built on a single laptop (OMEN 16, i7-14650HX, 32 GB RAM, RTX 4060 8 GB) to practice networking, systems administration and offensive security in one environment. It models a perimeter with a DMZ (Cisco ASAv), a routed core (SW-L3 + two access switches), and an Active Directory domain **kooler.local** running on Windows Server 2025. Attacker platforms (Kali, Exegol) sit on the untrusted outside segment alongside a NAT gateway to the internet. The number of assets, host types, and configured services are higly based on my host specs to allow running the entire environment at once without the PC sweating too much, and for the VMs to have descent resources allocation. So customize yours as needed.
+HomeLab is a GNS3 lab built on a single laptop (OMEN 16, i7-14650HX, 32 GB RAM, RTX 4060 8 GB) to practice networking, systems administration and offensive security in one environment. It models a perimeter with a DMZ (Cisco ASAv), a routed core (SW-L3 + two access switches), and an Active Directory domain **kooler.local** running on Windows Server 2025. Attacker platforms (Kali, Exegol) sit on the untrusted outside segment alongside a NAT gateway to the internet. The number of assets, host types, and configured services are higly based on my host specs to allow running the entire environment at once without the PC sweating too much, and for the VMs to have descent resources allocated. So customize yours as needed.
 
-Note : This is a baseline setup to get started with. New tools (SIEM, EDR, C2 server, etc.) and network configs will be added overtime and be somehow tracked in [CHANGELOG.md](Docs/CHANGELOG.md)
+Note : This is a baseline setup to get started with. New tools (SIEM, EDR, C2 server, etc.) and network configs will be added overtime and eventually be tracked in [CHANGELOG.md](Docs/CHANGELOG.md)
 
 ## Network Topology & Addressing
 
