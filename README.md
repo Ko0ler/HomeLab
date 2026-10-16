@@ -4,9 +4,9 @@
 
 ## Overview
 
-HomeLab is a GNS3 lab built on a single laptop (OMEN 16, i7-14650HX, 32 GB RAM, RTX 4060 8 GB) to practice networking, systems administration and offensive security in one environment. It models a perimeter with a DMZ (Cisco ASAv), a routed core (SW-L3 + two access switches), and an Active Directory domain **kooler.local** running on Windows Server 2025. Attacker platforms (Kali, Exegol) sit on the untrusted outside segment alongside a NAT gateway to the internet. The number of assets, host types, and configured services are higly based on my host specs to allow running the entire environment at once without the PC sweating too much, and for the VMs to have descent resources allocated. So customize yours as needed.
+HomeLab is a GNS3 lab built on a single laptop (OMEN 16, i7-14650HX, 32 GB RAM, RTX 4060 8 GB) to practice networking, systems administration, and offensive security in one environment. It models a perimeter with a firewall (Cisco ASAv), a DMZ (Ubuntu Server), a routed core (SW-L3 + two access switches), and an Active Directory domain **kooler.local** running on Windows Server 2025. Attacker platforms (Kali, Exegol) sit on the untrusted outside segment alongside a NAT gateway to the internet. The number of assets, host types, and configured services are highly based on my host specs to allow running the entire environment simultaneously without the PC sweating too much, and for the VMs to have decent resources allocated. So customize yours as needed.
 
-Note : This is a baseline setup to get started with. New tools (SIEM, EDR, C2 server, etc.) and network configs will be added overtime and eventually be tracked in [CHANGELOG.md](Docs/CHANGELOG.md)
+Note: This is a baseline setup to get started with. New tools (SIEM, EDR, C2 server, etc.) and network configs will be added over time and eventually be tracked in [CHANGELOG.md](Docs/CHANGELOG.md)
 
 ## Network Topology & Addressing
 
@@ -40,13 +40,12 @@ VPCS mainly used for connectivity testing.
 
 ## Host Inventory
 
-| Host | OS / Build | Hostname | IP / VLAN | Services |
+| Host / Resources | OS / Build | Hostname | IP / VLAN | Services |
 | --- | --- | --- | --- | --- |
-| Kali | Kali Linux 2026.2 (VMware amd64) | Kali | 192.168.160.130 (outside segment) | Attacker platform |
-| ParrotOS/Exegol | ParrotOS + Exegol | — | outside segment (Switch-X) | Attacker platform |
-| Ubuntu | Ubuntu Desktop 26.04 | ko0ler-VMware-Virtual-Platform | 10.10.2.1 (DMZ) | DVWA, bWAPP, httpbin, FTP, Samba, MySQL |
-| WindowsServer 2025 | Windows Server 2025 | DC01 | 192.168.50.10 (VLAN 50) | ADCS, ADDS, DHCP, DNS, MSSQL — domain controller for kooler.local |
-| Windows 10 | Windows 10 | PC1 | DHCP (VLAN 40) | Domain-joined workstation |
+| Kali (1 CPU, 8 Cores, 4/80GB) | Kali Linux 2026.2 (VMware amd64) | Kali | 192.168.160.130 (outside segment) | Attacker platform |
+| Ubuntu (1 CPU, 2 Cores, 3/60GB) | Ubuntu Desktop 26.04 | ko0ler-VMware-Virtual-Platform | 10.10.2.1 (DMZ) | DVWA, bWAPP, httpbin, FTP, Samba, MySQL |
+| WindowsServer 2025 (1 CPU, 4 Cores, 4/60GB) | Windows Server 2025 | DC01 | 192.168.50.10 (VLAN 50) | ADCS, ADDS, DHCP, DNS, MSSQL — domain controller for kooler.local |
+| Windows 10 (1 CPU, 2 Cores, 4/60GB) | Windows 10 | PC1 | DHCP (VLAN 40) | Domain-joined workstation |
 | PC-A | VPCS | — | VLAN 50 (.15) | — |
 | PC-B | VPCS | — | VLAN 40 (.15) | — |
 | PC-C | VPCS | — | VLAN 30 (.1) | — |
