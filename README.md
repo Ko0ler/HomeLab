@@ -6,7 +6,7 @@
 
 HomeLab is a GNS3 lab built on a single laptop (OMEN 16, i7-14650HX, 32 GB RAM, RTX 4060 8 GB) to practice networking, systems administration, and offensive security in one environment. It models a perimeter with a firewall (Cisco ASAv), a DMZ (Ubuntu Server), a routed core (SW-L3 + two access switches), and an Active Directory domain **kooler.local** running on Windows Server 2025. Attacker platforms (Kali, Exegol) sit on the untrusted outside segment alongside a NAT gateway to the internet. The number of assets, host types, and configured services are highly based on my host specs to allow running the entire environment simultaneously without the PC sweating too much, and for the VMs to have decent resources allocated. So customize yours as needed.
 
-Note: This is a baseline setup to get started with. New tools (SIEM, EDR, C2 server, etc.) and network configs will be added over time and eventually be tracked in [CHANGELOG.md](Docs/CHANGELOG.md). In addition, as the firewall is not actually under licensing (eval mode), the bandwidth involved is throttled and heavily affects network performance (source → DMZ, inside → Internet).
+Pratical Note: This is a baseline setup to get started with. New tools (SIEM, EDR, C2 server, etc.) and network configs will be added over time and eventually be tracked in [CHANGELOG.md](Docs/CHANGELOG.md). In addition, as the firewall is not actually under licensing (eval mode), the bandwidth involved is throttled and heavily affects network performance (source → DMZ, inside → Internet). So I use create a additional net adpater on the VMs (VMware NAT) for demanding network traffics like system updates or software downloads. 
 
 ## Network Topology & Addressing
 
