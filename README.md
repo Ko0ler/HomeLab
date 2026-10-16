@@ -6,7 +6,7 @@
 
 HomeLab is a GNS3 lab built on a single laptop (OMEN 16, i7-14650HX, 32 GB RAM, RTX 4060 8 GB) to practice networking, systems administration, and offensive security in one environment. It models a perimeter with a firewall (Cisco ASAv), a DMZ (Ubuntu Server), a routed core (SW-L3 + two access switches), and an Active Directory domain **kooler.local** running on Windows Server 2025. Attacker platforms (Kali, Exegol) sit on the untrusted outside segment alongside a NAT gateway to the internet. The number of assets, host types, and configured services are highly based on my host specs to allow running the entire environment simultaneously without the PC sweating too much, and for the VMs to have decent resources allocated. So customize yours as needed.
 
-Note: This is a baseline setup to get started with. New tools (SIEM, EDR, C2 server, etc.) and network configs will be added over time and eventually be tracked in [CHANGELOG.md](Docs/CHANGELOG.md)
+Note: This is a baseline setup to get started with. New tools (SIEM, EDR, C2 server, etc.) and network configs will be added over time and eventually be tracked in [CHANGELOG.md](Docs/CHANGELOG.md). In addition, as the firewall is not actually under licensing (eval mode), the bandwidth involved is throttled and heavily affects network performance (source → DMZ, inside → Internet).
 
 ## Network Topology & Addressing
 
@@ -36,7 +36,6 @@ Trunk links SW-L3 ↔ L2-SW-1/L2-SW-2 carry VLANs 30, 40, 50, 100 (native VLAN 9
 | L2-SW-2 | Access switch | Cisco IOSv L2 15.2 | VLAN 40 access ports (Windows 10, PC-B); VLAN 30 (PC-D) |
 
 ASAv is licensed under Smart Licensing Using Policy, running in Evaluation Mode with feature tier **standard** and throughput level **1G** declared locally (no CSSM registration).
-VPCS mainly used for connectivity testing.
 
 ## Host Inventory
 
@@ -50,6 +49,8 @@ VPCS mainly used for connectivity testing.
 | PC-B | VPCS | — | VLAN 40 (.15) | — |
 | PC-C | VPCS | — | VLAN 30 (.1) | — |
 | PC-D | VPCS | — | VLAN 30 (.2) | — |
+
+VPCS are mainly used for connectivity testing.
 
 ## Active Directory (kooler.local)
 
