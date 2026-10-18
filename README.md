@@ -31,9 +31,9 @@ Trunk links SW-L3 ↔ L2-SW-1/L2-SW-2 carry VLANs 30, 40, 50, 100 (native VLAN 9
 | --- | --- | --- | --- |
 | Router | Edge router, NAT-side gateway | Cisco IOSv 15.9 | Gi0/0 10.10.3.1/29 (to FW); Gi0/1 192.168.160.100/24 (to Switch-X) |
 | FW | Perimeter firewall, DMZ | Cisco ASAv 9.22(1)1 | outside 10.10.3.2/29; dmz 10.10.2.2/30; inside 10.10.1.2/30 |
-| SW-L3 | Core L3 switch, inter-VLAN routing | Cisco IOSv L2 15.2 | Gi0/0 10.10.1.1/30 (to FW); Gi0/1-0/2 trunks to L2-SW-1/2; SVIs for VLAN 30/40/50/100 |
-| L2-SW-1 | Access switch | Cisco IOSv L2 15.2 | VLAN 50 access ports (WinServer2025, PC-A) |
-| L2-SW-2 | Access switch | Cisco IOSv L2 15.2 | VLAN 40 access ports (Windows 10, PC-B); VLAN 30 (PC-D) |
+| SW-L3 | Core L3 switch, inter-VLAN routing | Cisco IOSv L2 15.2 | Gi0/0 10.10.1.1/30 (to FW); Gi0/1-0/2 trunks to L2-SW-1/2; SVIs for VLAN 30/40/50/100; VTP server mode |
+| L2-SW-1 | Access switch | Cisco IOSv L2 15.2 | VLAN 50 access ports (WinServer2025, PC-A); VTP client mode |
+| L2-SW-2 | Access switch | Cisco IOSv L2 15.2 | VLAN 40 access ports (Windows 10, PC-B); VLAN 30 (PC-D); VTP client mode |
 
 ASAv is licensed under Smart Licensing Using Policy, running in Evaluation Mode with feature tier **standard** and throughput level **1G** declared locally (no CSSM registration).
 
