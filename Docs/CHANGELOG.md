@@ -5,11 +5,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-### Known issues
-- Inside LAN ↔ DMZ/internet throughput capped near 150 Kbps despite the ASAv licensing fix, while outside-segment traffic reaches 5+ Mbps. Suspected duplex mismatch or NIC emulation issue on the ASA inside (Gi0/0) ↔ SW-L3 link.
-- Intermittent GNS3 controller 404 errors (`POST .../qemu/nodes/.../reload`) on random nodes, self-resolving. Suspected compute server resource starvation; possibly related to the throughput issue above.
+### Known issues and misconfigs
+- External source → DMZ and inside LAN → Internet throughput capped near 150 Kbps, while outside-segment traffic reaches 5+ Mbps (depending on the host internet speed.
+- Frequent packets lost from the firewall. Suspecting the throttled bandwidth and eval mode
+- Intermittent GNS3 controller 404 errors (`POST .../qemu/nodes/.../reload`) on random nodes, self-resolving. Suspected compute server resource starvation or CPU (host and VMs) synchronization issues.
 - VLAN 100 has an SVI on SW-L3 and is trunked, but is absent from the ASA `INSIDE_SUBNETS` object group — no ACL permit or NAT coverage yet.
-- No `ip helper-address` configured on SW-L3 SVIs — DHCP requests from VLANs other than the DHCP server's own subnet may fail.
 
 ## [2026-10-12]
 
