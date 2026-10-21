@@ -68,7 +68,7 @@ Windows 10 (PC1) is joined to kooler.local; local login `ko0ler` also exists on 
 
 | Zone pair | Direction | Allowed |
 | --- | --- | --- |
-| outside → DMZ | inbound | HTTP(80), HTTPS(443), 8080, 8070, 8060 to Ubuntu (10.10.2.1); ICMP |
+| outside → DMZ | inbound | HTTP(80), HTTPS(443), DVWA (8080), bWAPP (8070), htppbin (8060) to Ubuntu (10.10.2.1); ICMP |
 | DMZ → outside | outbound | HTTP, HTTPS, DNS(53) |
 | DMZ → inside | — | denied |
 | inside → DMZ | outbound | full IP to Ubuntu |
