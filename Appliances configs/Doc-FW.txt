@@ -65,8 +65,9 @@ nat (dmz,outside) source static DMZ_UBUNTU_SERVER DMZ_MAPPED
 ! SECTION 5: ACCESS CONTROL LISTS (ACL) & TRAFFIC POLICIES
 !
 ! --- INSIDE INBOUND ACL ---
-! Permit internal endpoints to access the DMZ server (e.g., SSH, Web, Admin)
-access-list INSIDE_INbound extended permit ip object-group INSIDE_SUBNETS object DMZ_UBUNTU_SERVER
+! Restrict internal endpoints to access the DMZ server over SSH expect VLAN 50
+access-list INSIDE_INbound extended permit tcp 192.168.50.0 255.255.255.0 object DMZ_UBUNTU_SERVER eq ssh
+access-list INSIDE_INbound extended deny tcp object-group INSIDE_SUBNETS object DMZ_UBUNTU_SERVER eq ssh
 ! Permit internal endpoints to go out to the Internet
 access-list INSIDE_INbound extended permit ip object-group INSIDE_SUBNETS any
 access-group INSIDE_INbound in interface inside
@@ -98,11 +99,16 @@ access-group OUTSIDE_INbound in interface outside
 ! SECTION 6: GLOBAL PACKET INSPECTION
 !
 ! Enable global inspection engine for stateful tracking of common application protocols
-!policy-map global_policy
-! class inspection_default
-!  inspect icmp
-!  inspect http
-!  inspect ftp
+policy-map global_policy
+ class inspection_default
+  inspect icmp
+  inspect http
 !
 !service-policy global_policy global
+!
+!
+! SECTION 7: MISCELLANEOUS
+!
+dns domain-lookup inside
+dns name-server 1.1.1.1 192.168.50.10
 !
