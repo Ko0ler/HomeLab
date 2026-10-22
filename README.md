@@ -71,7 +71,7 @@ Windows 10 (PC1) is joined to kooler.local; local login `ko0ler` also exists on 
 | outside → DMZ | inbound | HTTP(80), HTTPS(443), DVWA (8080), bWAPP (8070), htppbin (8060) to Ubuntu (10.10.2.1); ICMP |
 | DMZ → outside | outbound | HTTP, HTTPS, DNS(53) |
 | DMZ → inside | — | denied |
-| inside → DMZ | outbound | full IP to Ubuntu |
+| inside → DMZ | outbound | full IP to Ubuntu execpt SSH (only accessible on VLAN 50) |
 | inside → outside | outbound | full IP, PAT via ASA outside interface |
 
 NAT: PAT for inside subnets (192.168.30/40/50.0/24, dynamic, via ASA outside) and static NAT for the DMZ host (10.10.2.1 → 10.10.3.3, DMZ\_MAPPED). Note: inter-VLAN traffic between VLANs 30/40/50 never crosses the ASA — SW-L3 routes it locally, so the firewall only sees north-south (DMZ/outside) traffic.
