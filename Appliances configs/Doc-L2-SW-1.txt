@@ -22,10 +22,6 @@ interface GigabitEthernet0/3
  switchport mode access
  negotiation auto
 !
-interface GigabitEthernet1/0
- switchport access vlan 50
- switchport mode access
- negotiation auto
 !
 vtp mode client
 vtp domain KO0LER
