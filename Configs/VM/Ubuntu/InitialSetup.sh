@@ -1,18 +1,11 @@
-#!/bin/bash
-
-# --- System Update and Base Tools ---
-echo -e "\n[+] UPDATING SYSTEM \n"
-sudo apt update && sudo apt upgrade -y && echo -e "\n[+] UPDATE DONE \n"
-
-echo -e "\n[+] INSTALLING ESSENTIAL TOOLS \n"
+# apt update
+sudo apt update && echo -e "\n#### UPDATE DONE ####\n"
+# Essential installations
 sudo apt install -y open-vm-tools-desktop build-essential docker gedit net-tools btop
-echo -e "\n[+] INSTALLATION DONE \n"
+echo -e "\n#### INSTALLATION DONE ####\n"
 
-# --- BASH Configuration ---
-# This block checks if the setup already exists to prevent duplicate appends
-if ! grep -q "########## CUSTOM SETUP ##\n" ~/.bashrc; then
-    echo -e "\n[+] CONFIGURING .BASHRC \n"
-    sudo cat << 'EOF' >> ~/.bashrc
+# Aliases setup
+sudo cat << 'EOF' >> ~/.zshrc
 
 ########## CUSTOM SETUP ##########
 
@@ -136,25 +129,14 @@ kb() {
 
 #export PROMPT='-%F{10}[%D{%m/%d/%Y} %*]-%F{214}%n%F{196}@%m%f-%F{33}%~%f $ '
 EOF
-    source ~/.bashrc
-    echo -e "\n[+] .BASHRC UPDATED \n"
-else
-    echo -e "\n[+] .BASHRC ALREADY CONFIGURED \n"
-fi
 
-echo -e "\n[+] FINALIZING SETUP\n"
-sudo updatedb &>/dev/null
-source ~/.bashrc
+source ~/.zshrc && echo -e "\n#### ALIASES DONE ####\n"
 
-echo -e "\n[+] GETTING VULNERABLE CONTAINERS \n"
+echo -e "\n#### GETTING VULNERABLE CONTAINERS ####\n"
 
 sudo docker pull vulnerables/web-dvwa
 sudo docker pull raesene/bwapp
 sudo docker pull kennethreitz/httpbin
 dvwa;bwapp;httpb && sudo updatedb;echo;dp;echo;nnl
 
-echo -e "
-#-------------------------------------------------------------------------------
-# SETUP COMPLETE
-#-------------------------------------------------------------------------------
-"
+echo -e "\n#### SETUP DONE ####\n"

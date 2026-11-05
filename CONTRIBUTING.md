@@ -6,7 +6,7 @@ This is a personal home lab used to practice networking, systems administration 
 
 If you spot a config error, a factual mistake in the documentation, or a security concern in how something is described, please open an issue with:
 
-- Which file is affected (`README.md`, a config under `Appliances configs/`, etc.)
+- Which file is affected (`README.md`, a config under `Configs/VM`, etc.)
 - What's wrong, and what you'd expect instead
 - Any relevant command output or reference, if applicable
 
