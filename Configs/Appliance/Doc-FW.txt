@@ -79,6 +79,7 @@ access-list DMZ_INbound extended deny ip object DMZ_UBUNTU_SERVER object-group I
 access-list DMZ_INbound extended permit tcp object DMZ_UBUNTU_SERVER any eq www
 access-list DMZ_INbound extended permit tcp object DMZ_UBUNTU_SERVER any eq https
 access-list DMZ_INbound extended permit udp object DMZ_UBUNTU_SERVER any eq domain
+access-list DMZ_INbound extended permit tcp object DMZ_UBUNTU_SERVER any eq 4444
 access-list DMZ_INbound extended permit icmp object DMZ_UBUNTU_SERVER any
 access-group DMZ_INbound in interface dmz
 
