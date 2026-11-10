@@ -72,14 +72,16 @@ ws='/mnt/hgfs/Share-Pentest Lab'
 shp='/mnt/hgfs/Share-Pentest Lab/shares'
 shv='/mnt/hgfs/Share-VM/'
 
-#FUNCTION
+# FUNCTIONS
 
+# Start already created containers
 dppa() {
     for i in $(sudo docker ps -aq); do 
         sudo docker start "$i"
     done
 }
 
+# Search for binaries in default folders using keyword
 sr() {
     if [ -z "$1" ]; then
         echo "Usage: sr <keyword>"
@@ -94,6 +96,7 @@ sr() {
     ls -alhi /usr/sbin | grep -i "$1"
 }
 
+# Periodic check of the availability of a service on a target host
 checkState() {
     local IP PORT TIME
     if [ $# -eq 3 ]; then
@@ -117,6 +120,8 @@ checkState() {
     done
 }
 
+# I use and external keyboard and the LED feature is not properly set on the Ubuntu VM
+# So here's the fix
 kb() {
     while true; do
         # Find the current path dynamically, regardless of the number changing
