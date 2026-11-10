@@ -129,8 +129,8 @@ TargetScan() {
 	sudo nmap -sS -A --disable-arp-ping --source-port 53 -T4 -v -oN nmap-tcp-2 $ip
 }
 
-# Quick web can
-WebSacn() {
+# Quick web scan
+WebScan() {
 	echo -e "\n[+] Web footprint (WAF and techno used)\n"
 	wafw00f $iph:$p|tee wafcheck-1
 	echo -e "\n"
