@@ -24,3 +24,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Confirmed working
 - Inside LAN and `192.168.160.0/24` reach the internet and the DMZ with the intended ACLs, after the routing fixes above.
 - NAT (PAT for inside subnets, static NAT for the DMZ host) configured and verified on the ASA.
+
+## [2026-11-5]
+
+### Added
+- Attack Host (Kali) and Target DMZ (Ubuntu) setup scripts (`InitialSetup.sh`)
+
+## [2026-11-10]
+
+### Added
+- ACL allow rule on the firewall to allow port `4444` for `DMZ -> Attack host` for reverse shell conveniance according to the setup scripts default values
+
+### Tests and Issues
+- Attack Host reachable on port 4444 from DMZ and `Command injection` works on DVWA, but can't to get a reverse shell
