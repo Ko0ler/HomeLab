@@ -26,7 +26,7 @@ iphs=https://$ip
 
 # LOCAL ATTACKER
 ip=192.168.160.130
-p=4444
+po=4444
 
 # ALIAS
 
