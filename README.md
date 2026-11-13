@@ -50,7 +50,7 @@ ASAv is licensed under Smart Licensing Using Policy, running in Evaluation Mode 
 | PC-C | VPCS | — | VLAN 30 (.1) | — |
 | PC-D | VPCS | — | VLAN 30 (.2) | — |
 
-VPCS are mainly used for connectivity testing. I created setup scripts for attack host (Kali) [here](Configs/VM/Attack Host/InitialSetup.sh) and target host (Ubuntu) [here](Configs/VM/Ubuntu/InitialSetup.sh)
+VPCS are mainly used for connectivity testing. I created setup scripts for attack host (Kali) [here](Configs/VM/Attack%20Host/InitialSetup.sh) and target host (Ubuntu) [here](Configs/VM/Ubuntu/InitialSetup.sh)
 
 ## Active Directory (kooler.local)
 
