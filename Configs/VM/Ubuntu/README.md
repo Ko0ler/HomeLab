@@ -1,6 +1,6 @@
-# Ubuntu Pentest Lab Auto-Setup
+# Ubuntu Auto-Setup
 
-A single Bash script that turns a fresh Ubuntu VM into a ready-to-use web-pentest practice box: base tooling, a customized shell (aliases and helper functions), and intentionally vulnerable Docker targets.
+A single Bash script that turns a fresh Ubuntu VM (or any Debian distro) into a ready-to-use web-pentest practice box: base tooling, a customized shell (aliases and helper functions), and intentionally vulnerable Docker targets. This is meant to be a target host for the Kali, which is set up [here](../Attack%20Host)
 
 > ⚠️ **Warning:** This script deploys **intentionally vulnerable applications** (DVWA, bWAPP, a default WordPress stack) and is primarily designed for the HomeLab environment (I've set IPs and ports accordingly). Run it only in an isolated lab VM (NAT or host-only networking). Never expose it to a shared network or the internet.
 
