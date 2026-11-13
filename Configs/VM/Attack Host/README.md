@@ -51,7 +51,7 @@ Edit the variables at the top of the script **before** running it:
 |---|---|---|
 | `LOCAL_TARGET_IP` | Local lab target | `10.10.3.3` - This is the DMZ IP as configured in the [ASA firewall](../../Appliance/FW.cfg) |
 | `LOCAL_TARGET_PORT` | Local target service port | `8080` - for the DVWA |
-| `ONLINE_TARGET_IP` | Online target (HackTheBox, Pentest, etc.) | read from `$TARGET`, or set as you wish |
+| `ONLINE_TARGET_IP` | Online target (HackTheBox, Pentest, etc.) | `https://www.inlanefreight.com` - This is a public vulnerable website from HackTheBox |
 | `ONLINE_TARGET_PORT` | Online target service port | `80` |
 
 They become these shell variables:
@@ -64,13 +64,6 @@ They become these shell variables:
 | `ip`, `p` | Online target IP and port |
 | `iph`, `iphs` | `http://` and `https://` URLs of the online target |
 | `lip`, `lp` | Your attacker IP (VPN interface) and listener port |
-
-To change the online target during an engagement:
-
-```bash
-export TARGET=[TARGET_IP]
-sc          # reload zsh config
-```
 
 ### Path variables
 
