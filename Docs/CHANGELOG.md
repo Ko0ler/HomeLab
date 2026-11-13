@@ -37,3 +37,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Tests and Issues
 - Attack Host reachable on port 4444 from DMZ and `Command injection` works on DVWA, but can't to get a reverse shell
+
+## [2026-11-13]
+
+### Added
+- README files for both attack (Kali) and target host (Ubuntu)
+- Target host now include a docker based Wordpress webapp (latest version), along with MySQL 8.0
+- ACL allow rule on the firewall on port `8050` for the wordpress webapp
