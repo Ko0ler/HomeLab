@@ -4,7 +4,7 @@
 # Modify these as needed before running
 LOCAL_TARGET_IP="10.10.3.3"
 LOCAL_TARGET_PORT="8080"
-ONLINE_TARGET_IP=$TARGET
+ONLINE_TARGET_IP="inlanefreight.com"
 ONLINE_TARGET_PORT="80"
 
 # --- System Update and Base Tools ---
@@ -178,7 +178,6 @@ fi
 
 echo -e "\n[+] FINALIZING SETUP\n"
 sudo updatedb &>/dev/null
-source ~/.zshrc
 echo -e "
 #-------------------------------------------------------------------------------
 # SETUP COMPLETE
