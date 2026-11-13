@@ -9,19 +9,19 @@ ONLINE_TARGET_PORT="80"
 
 # --- System Update and Base Tools ---
 echo -e "\n[+] UPDATING SYSTEM \n"
-sudo apt update && sudo apt upgrade -y && echo -e "\n[+] UPDATE DONE \n"
+sudo apt update && sudo apt full-upgrade -y && echo -e "\n[+] UPDATE DONE \n"
 
 echo -e "\n[+] INSTALLING ESSENTIAL TOOLS \n"
 sudo apt install -y open-vm-tools-desktop zsh gedit build-essential \
-    openvpn tmux tree locate btop curlie nmap curl netcat-openbsd git \
+    openvpn tmux tree locate btop curlie nmap wafw00f whatweb curl netcat-openbsd git \
     python3-pip python3-venv
 echo -e "\n[+] INSTALLATION DONE \n"
 
 # --- ZSH Configuration ---
 # This block checks if the setup already exists to prevent duplicate appends
-if ! grep -q "########## CUSTOM SETUP ##\n" ~/.zshrc; then
+if ! grep -q "# CUSTOM SETUP #" ~/.zshrc; then
     echo -e "\n[+] CONFIGURING .ZSHRC \n"
-    sudo cat << 'EOF' >> ~/.zshrc
+    cat << EOF >> ~/.zshrc
 
 ########## CUSTOM SETUP ##########
 
@@ -47,7 +47,6 @@ alias lls='ls -alhi'
 alias t='tree -L 1'
 alias tt='tree -L 2'
 alias cl='clear'
-alias rr='find . ! -name Data.txt -exec rm -rf {} +'
 alias sc='source ~/.zshrc'
 alias ssc='sc; clear'
 
@@ -67,14 +66,15 @@ alias ppo='ping $ipo -c 2'
 alias ii='echo -e "\nLOCAL TARGET\n\ntarget (ipo) : $ipo\ntarget-http (ipho) : $ipho\nport (po) : $po\nattacker ip (lipo) : $lipo\nattacker port (lpo) : $lpo\n\nONLINE TARGET\n\ntarget (ip) : $ip\ntarget-http (iph) : $iph\nport (p) : $p\nattacker ip (lip) : $lip\nattacker port (lp) : $lp\n"'
 
 # PATHS
+
 # Adjust these to your actual mount points
-ws='/mnt/hgfs/Share-Pentest Lab'
-shp='/mnt/hgfs/Share-Pentest Lab/shares'
-shv='/mnt/hgfs/Share-VM/'
-local='/mnt/hgfs/Share-Pentest Lab/Tests/Local'
-tools='/mnt/hgfs/Share-Pentest Lab/Tools'
-machine='/mnt/hgfs/Share-Pentest Lab/Tests/HTB/lab/machine'
-module='/mnt/hgfs/Share-Pentest Lab/Tests/HTB/modules'
+#ws='/mnt/hgfs/Share-Pentest Lab'
+#shp='/mnt/hgfs/Share-Pentest Lab/shares'
+#shv='/mnt/hgfs/Share-VM/'
+#local='/mnt/hgfs/Share-Pentest Lab/Tests/Local'
+#tools='/mnt/hgfs/Share-Pentest Lab/Tools'
+#machine='/mnt/hgfs/Share-Pentest Lab/Tests/HTB/lab/machine'
+#module='/mnt/hgfs/Share-Pentest Lab/Tests/HTB/modules'
 
 #-------------------------------------------------------------------------------
 # FUNCTIONS
@@ -140,7 +140,6 @@ WebScan() {
 
 ########## END CUSTOM SETUP ##########
 EOF
-    source ~/.zshrc
     echo -e "\n[+] .ZSHRC UPDATED \n"
 else
     echo -e "\n[+] .ZSHRC ALREADY CONFIGURED \n"
@@ -149,7 +148,7 @@ fi
 # --- TMUX Configuration ---
 if ! grep -q "set -g prefix C-space" ~/.tmux.conf; then
     echo -e "\n[+] CONFIGURING .TMUX.CONF \n"
-    sudo cat << 'EOF' >> ~/.tmux.conf
+    cat << 'EOF' >> ~/.tmux.conf
 
 unbind r
 bind r source-file ~/.tmux.conf \; display \"Config reloaded.\"
