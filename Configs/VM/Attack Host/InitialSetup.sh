@@ -98,7 +98,7 @@ sr() {
 }
 
 # Continuous port scanner for target monitoring
-checkTarget() {
+checktarget() {
     local IP PORT TIME
     if [ $# -eq 3 ]; then
         IP=$1
@@ -122,7 +122,7 @@ checkTarget() {
 }
 
 # Quick nmap scan
-TargetScan() {
+targetscan() {
     echo -e "\n[+] Nmap Scan (-sS -sV -T4)\n"
 	sudo nmap -sS -sV --disable-arp-ping --source-port 53 -T4 -v -oN nmap-tcp-1 $ip
 	echo -e "\n[+] Nmap Scan (-sS -A -T4)\n"
@@ -130,7 +130,7 @@ TargetScan() {
 }
 
 # Quick web scan
-WebScan() {
+webscan() {
 	echo -e "\n[+] Web footprint (WAF and techno used)\n"
 	wafw00f $iph:$p|tee wafcheck-1
 	echo -e "\n"
