@@ -42,7 +42,7 @@ ASAv is licensed under Smart Licensing Using Policy, running in Evaluation Mode 
 | Host / Resources | OS / Build | Hostname | IP / VLAN | Services |
 | --- | --- | --- | --- | --- |
 | Kali (1 CPU, 8 Cores, 4/80GB) | Kali Linux 2026.2 (VMware amd64) | Kali | 192.168.160.130 (outside segment) | Attacker platform |
-| Ubuntu (1 CPU, 2 Cores, 3/60GB) | Ubuntu Desktop 26.04 | ko0ler-VMware-Virtual-Platform | 10.10.2.1 (DMZ) | DVWA, bWAPP, httpbin, FTP, Samba, MySQL |
+| Ubuntu (1 CPU, 2 Cores, 3/60GB) | Ubuntu Desktop 26.04 | ko0ler-VMware-Virtual-Platform | 10.10.2.1 (DMZ) | Wordpress, DVWA, bWAPP, httpbin, FTP, Samba, MySQL |
 | WindowsServer 2025 (1 CPU, 4 Cores, 4/60GB) | Windows Server 2025 | DC01 | 192.168.50.10 (VLAN 50) | ADCS, ADDS, DHCP, DNS, MSSQL — domain controller for kooler.local |
 | Windows 10 (1 CPU, 2 Cores, 4/60GB) | Windows 10 | PC1 | DHCP (VLAN 40) | Domain-joined workstation |
 | PC-A | VPCS | — | VLAN 50 (.15) | — |
@@ -50,7 +50,7 @@ ASAv is licensed under Smart Licensing Using Policy, running in Evaluation Mode 
 | PC-C | VPCS | — | VLAN 30 (.1) | — |
 | PC-D | VPCS | — | VLAN 30 (.2) | — |
 
-VPCS are mainly used for connectivity testing.
+VPCS are mainly used for connectivity testing. I created setup scripts for attack host (Kali) [here](Configs/VM/Attack Host/InitialSetup.sh) and target host (Ubuntu) [here](Configs/VM/Ubuntu/InitialSetup.sh)
 
 ## Active Directory (kooler.local)
 
@@ -68,7 +68,7 @@ Windows 10 (PC1) is joined to kooler.local; local login `ko0ler` also exists on 
 
 | Zone pair | Direction | Allowed |
 | --- | --- | --- |
-| outside → DMZ | inbound | HTTP(80), HTTPS(443), DVWA (8080), bWAPP (8070), htppbin (8060) to Ubuntu (10.10.2.1); ICMP |
+| outside → DMZ | inbound | HTTP(80), HTTPS(443), DVWA (8080), bWAPP (8070), htppbin (8060), Wordpress (8050) to Ubuntu (10.10.2.1); ICMP |
 | DMZ → outside | outbound | HTTP, HTTPS, DNS(53) |
 | DMZ → inside | — | denied |
 | inside → DMZ | outbound | full IP to Ubuntu execpt SSH (only accessible on VLAN 50) |
