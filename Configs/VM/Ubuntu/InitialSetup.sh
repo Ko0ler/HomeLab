@@ -7,7 +7,7 @@ echo -e "\n[+] UPDATING SYSTEM \n"
 sudo apt update && sudo apt upgrade -y && echo -e "\n[+] UPDATE DONE \n"
 
 echo -e "\n[+] INSTALLING ESSENTIAL TOOLS \n"
-sudo apt install -y open-vm-tools-desktop build-essential docker.io docker-compose-v2 gedit net-tools netcat-openbsd btop plocate tree 
+sudo apt install -y open-vm-tools-desktop build-essential gedit net-tools netcat-openbsd btop plocate tree docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 
 echo -e "\n[+] INSTALLATION DONE \n"
 
 # --- BASH Configuration ---
