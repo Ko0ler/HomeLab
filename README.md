@@ -25,7 +25,7 @@ A condensed path to get the lab running. Details for each piece are in the secti
 
 ### Prerequisites
 
-- **Host:** a machine able to run GNS3 plus several VMs at once. The reference build uses 32 GB RAM and a modern 14th-gen i7; plan for at least 16 GB if you reduce the VM count.
+- **Host:** a machine able to run GNS3 plus several VMs at once. The reference build uses 32 GB RAM and a modern 14th-gen i7; 16 GB of RAM is fine if you leave some VMs turned off.
 - **Software:** GNS3 (server + GUI) and VMware Workstation. The VMs and the GNS3 nodes must be able to talk to each other (VMware NAT/host-only adapters).
 - **Images (not included):** Cisco IOSv, IOSv L2, and ASAv for GNS3; Kali (and optionally Exegol); Ubuntu Desktop; Windows Server 2025; Windows 10.
 
