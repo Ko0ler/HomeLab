@@ -151,8 +151,8 @@ Lab credentials are intentionally **not committed** to this repository.
 
 | Scope | Account | Hostname |
 | --- | --- | --- |
-| Local | kali | ko0ler-VMware-Virtual-Platform (Kali) |
-| Local | ko0ler | Ubuntu |
+| Local | kali |  Kali |
+| Local | ko0ler | ko0ler-VMware-Virtual-Platform (Ubuntu) |
 | Local | ko0ler | PC1 (Windows 10) |
 | Local | Administrator | DC01 (WindowsServer 2025) |
 | Domain (kooler.local) | Ko0ler | — |
