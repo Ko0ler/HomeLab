@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# --- Configuration Variables ---
-# Modify these as needed before running
-LOCAL_TARGET_IP="10.10.3.3"
-LOCAL_TARGET_PORT="8080"
-ONLINE_TARGET_IP="inlanefreight.com"
-ONLINE_TARGET_PORT="80"
-
 # --- System Update and Base Tools ---
 echo -e "\n[+] UPDATING SYSTEM \n"
 sudo apt update && sudo apt full-upgrade -y && echo -e "\n[+] UPDATE DONE \n"
@@ -18,25 +11,26 @@ sudo apt install -y open-vm-tools-desktop zsh gedit build-essential \
 echo -e "\n[+] INSTALLATION DONE \n"
 
 # --- ZSH Configuration ---
+# Modify the IPs and ports as needed before running
 # This block checks if the setup already exists to prevent duplicate appends
 if ! grep -q "# CUSTOM SETUP #" ~/.zshrc; then
     echo -e "\n[+] CONFIGURING .ZSHRC \n"
-    cat << EOF >> ~/.zshrc
+    cat << 'EOF' >> ~/.zshrc
 
 ########## CUSTOM SETUP ##########
 
 # TARGET DEFINITIONS
 # Local Target
-ipo=$LOCAL_TARGET_IP
-po=$LOCAL_TARGET_PORT
+ipo=10.10.3.3
+po=8080
 ipho=http://$ipo
 iphso=https://$ipo
 lipo=$(hostname -I|cut -d ' ' -f1)
 lpo=4444
 
 # Online Target
-ip=$ONLINE_TARGET_IP
-p=$ONLINE_TARGET_PORT
+ip="inlanefreight.com"
+p=80
 iph=http://$ip
 iphs=https://$ip
 lip=$(hostname -I|cut -d ' ' -f2)
@@ -107,8 +101,8 @@ checktarget() {
     else
         printf '[Usage]\n%s IP PORT TIME\n[+] Example : %s [TARGET_IP] [PORT] 20\n[+] Using defaults: %s %s 20\n' \
             "$funcstack[1]" "$funcstack[1]" "$ip" "$p"
-        IP=${ip:?"ip not set"}
-        PORT=${p:?"p not set"}
+        IP=$ip
+        PORT=$p
         TIME=20
     fi
 
@@ -174,6 +168,8 @@ bind-key k select-pane -U
 bind-key l select-pane -R
 EOF
     echo -e "\n[+] .TMUX.CONF UPDATED \n"
+else
+    echo -e "\n[+] .TMUX ALREADY CONFIGURED \n"
 fi
 
 echo -e "\n[+] FINALIZING SETUP\n"
