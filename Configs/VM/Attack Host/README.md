@@ -45,16 +45,16 @@ exec zsh
 
 ## Configuration
 
-Edit the variables at the top of the script **before** running it:
+Edit the variables in `.zshrc` content (the heredoc section) **before** running it:
 
 | Variable | Meaning | Default |
 |---|---|---|
-| `LOCAL_TARGET_IP` | Local lab target | `10.10.3.3` - This is the DMZ IP as configured in the [ASA firewall](../../Appliance/FW.cfg) |
-| `LOCAL_TARGET_PORT` | Local target service port | `8080` - for the DVWA |
-| `ONLINE_TARGET_IP` | Online target (HackTheBox, Pentest, etc.) | `https://www.inlanefreight.com` - This is a public vulnerable website from HackTheBox |
-| `ONLINE_TARGET_PORT` | Online target service port | `80` |
+| `ipo` | Local lab target | `10.10.3.3` - This is the DMZ IP as configured in the [ASA firewall](../../Appliance/FW.cfg) |
+| `po` | Local target service port | `8080` - for the DVWA |
+| `ip` | Online target (HackTheBox, Pentest, etc.) | `https://www.inlanefreight.com` - This is a public vulnerable website from HackTheBox |
+| `p` | Online target service port | `80` |
 
-They become these shell variables:
+They become these shell variables combination:
 
 | Variable | Description |
 |---|---|
