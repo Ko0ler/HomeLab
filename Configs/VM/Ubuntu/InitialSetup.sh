@@ -292,14 +292,14 @@ echo -e "> Running WordPress core installation (skips if already installed)"
 { sudo docker exec -u www-data wordpress_app bash -c "
     if ! wp core is-installed 2>/dev/null; then
         wp core install \
-        --url='http://localhost:8050' \
+        --url='http://10.10.3.3:8050' \
         --title='Ko0ler Lab - Wordpress' \
         --admin_user='admin' \
         --admin_password='Ch@nge_tHis_str0ng_ro0T_pasSWorD' \
         --admin_email='admin@kooler.local' \
         --skip-email
     fi
-"; } || { CONFIGURED=false; echo -e "\n[!] An error occurred!\n"; }
+"; } || { CONFIGURED=false; echo -e "\n[!] An error occurred!"; }
 
 echo -e "\n> Installing WP Mail SMTP and pre-configure Mailpit\n"
 { sudo docker exec -u www-data wordpress_app bash -c "
@@ -324,9 +324,9 @@ echo -e "\n> Installing WP Mail SMTP and pre-configure Mailpit\n"
         \"pass\": \"\"
         }
     }' --format=json
-" && echo -e "Done\n"; } || { CONFIGURED=false; echo -e "\n[!] An error occured!"\n; }
+" && echo -e "Done\n"; } || { CONFIGURED=false; echo -e "\n[!] An error occured!"; }
 
-[ "$CONFIGURED" != true ] && echo "> WordPress and WP Mail SMTP configuration failed. Some errors occured!\n" || echo "> WordPress and WP Mail SMTP configured\n"
+[ "$CONFIGURED" != true ] && echo -e "\n> WordPress and WP Mail SMTP configuration failed. Some errors occured!\n" || echo -e "\n> WordPress and WP Mail SMTP configured\n"
 
 echo -e "\n[+] REMOVING CREATED CONTAINERS AND CLEAN UP\n"
 {
