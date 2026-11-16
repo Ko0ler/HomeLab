@@ -11,7 +11,6 @@ sudo apt install -y open-vm-tools-desktop build-essential gedit net-tools netcat
 echo -e "\n[+] INSTALLATION DONE \n"
 
 # --- BASH Configuration ---
-# This block checks if the setup already exists to prevent duplicate appends
 if ! grep -q "# CUSTOM SETUP #" ~/.bashrc; then
     echo -e "\n[+] CONFIGURING .BASHRC \n"
     cat << 'EOF' >> ~/.bashrc
@@ -47,17 +46,19 @@ alias nnl='netstat -tlpo'
 alias nnc='netstat -pno'
 alias tp='nc -vz $ip'
 
+alias dvwa='sudo docker run -d --name dvwa_app -p 8080:80 vulnerables/web-dvwa'
+alias bwapp='sudo docker run -d --name bwapp_app -p 8070:80 raesene/bwapp'
+alias httpb='sudo docker run -d --name httpbin_app -p 8060:80 kennethreitz/httpbin'
+alias wpsql='sudo docker compose -f ~/wordpress/docker-compose.yml up -d'
+alias fullweb='dvwa && bwapp && httpb && wpsql'
+
 alias dp='sudo docker ps'
 alias dpp='sudo docker ps -aq'
-alias dvwa='sudo docker run -d -p 8080:80 vulnerables/web-dvwa'
-alias bwapp='sudo docker run -d -p 8070:80 raesene/bwapp'
-alias httpb='sudo docker run -d -p 8060:80 kennethreitz/httpbin'
-alias wpsql='sudo docker compose -f ~/wordpress/docker-compose.yml up -d'
 alias dr='sudo docker run -d -p'
-alias ds='sudo docker stop'
-alias drm='sudo docker rm -f'
-alias dsa='sudo docker stop $(sudo docker ps -aq)'
-alias dra='sudo docker rm $(sudo docker ps -aq)'
+alias dsf='sudo docker stop wordpress_app wordpress_db mailpit_app httpbin_app bwapp_app dvwa_app'
+alias drf='sudo docker rm wordpress_app wordpress_db mailpit_app httpbin_app bwapp_app dvwa_app'
+alias dsa='sudo docker stop $(dpp)'
+alias dra='dsa && sudo docker rm $(dpp)'
 
 #alias rr='find . ! -name Data.txt -exec rm -rf {} +'
 alias cl='clear'
@@ -69,9 +70,9 @@ alias sp='ssc;ppp'
 
 #Path
 
-#ws='/mnt/hgfs/Share-Pentest Lab'
-#shp='/mnt/hgfs/Share-Pentest Lab/shares'
-#shv='/mnt/hgfs/Share-VM/'
+ws='/mnt/hgfs/Share-Pentest Lab'
+shp='/mnt/hgfs/Share-Pentest Lab/shares'
+shv='/mnt/hgfs/Share-VM/'
 
 # FUNCTIONS
 
@@ -121,8 +122,8 @@ checkState() {
     done
 }
 
-# I use and external keyboard and the LED feature is not properly set on the Ubuntu VM
-# So here's the fix! Run like this : kb &
+# I use an external keyboard and the LED feature is not properly set on the Ubuntu VM
+# So here's the fix! Run like this: kb &
 kb() {
     while true; do
         # Find the current path dynamically, regardless of the number changing
@@ -138,39 +139,49 @@ kb() {
         # Sleep briefly to save CPU resources while reacting fast to Caps Lock presses
         sleep 0.5
     done
+
+########## END CUSTOM SETUP ##########
 }
 EOF
-    source ~/.bashrc
-    echo -e "\n[+] .BASHRC UPDATED \n"
+    echo -e "\n[+] BASHRC UPDATED \n"
 else
-    echo -e "\n[+] .BASHRC ALREADY CONFIGURED \n"
+    echo -e "\n[+] BASHRC ALREADY CONFIGURED \n"
 fi
 
-echo -e "\n[+] FINALIZING SETUP\n"
+echo -e "\n[+] UPDATING FILE NAME DATABASE\n"
 shopt -s expand_aliases
 sudo updatedb &>/dev/null
-source ~/.bashrc
 
-echo -e "\n[+] GETTING VULNERABLE CONTAINERS \n"
+echo -e "\n[+] GETTING VULNERABLE CONTAINERS \nLatest DVWA, bWAPP, httpbin, Mailpit and Wordpress\n"
 
 sudo docker pull vulnerables/web-dvwa
 sudo docker pull raesene/bwapp
 sudo docker pull kennethreitz/httpbin
+sudo docker pull axllent/mailpit:latest
+sudo docker pull wordpress:latest
 
-echo -e "\n[+] SETTING VULNERABLE WEBSERVER \nLatest Wordpress and MySQL 8.0\n"
+echo -e "\n[+] SETTING VULNERABLE WEBSERVER \nLatest Wordpress, MySQL 8.0 and latest Mailpit"
 
 mkdir -p ~/wordpress && cd ~/wordpress
-[ -f .env ] || { umask 077; cat > .env << 'ENV_EOF'
-MYSQL_ROOT_PASSWORD=Ch@nge_tHis_str0ng_ro0T_pasSWorD
+[ -f .env ] && echo -e "\n> File '.env' already exists" || { umask 077; cat > .env << ENV_EOF
+MYSQL_ROOT_PASSWORD=$(openssl rand -hex 16)
 MYSQL_DATABASE=wordpress
 MYSQL_USER=wordpress_user
-MYSQL_PASSWORD=chaNGe_thIs_StroNg_db_p@ssword
+MYSQL_PASSWORD=$(openssl rand -hex 16)
 WORDPRESS_PORT=8050
+WP_ADMIN_USER=admin
+WP_ADMIN_PASSWORD=$(openssl rand -hex 12)
+MAILPIT_UI_PORT=8025
+MAILPIT_SMTP_PORT=1025
+MP_MAX_MESSAGES=5000
+MP_SMTP_AUTH_ACCEPT_ANY=1
+MP_SMTP_AUTH_ALLOW_INSECURE=1
 ENV_EOF
+
+echo -e "\n> Created '.env' file"
 }
 
-chmod 600 .env
-[ -f docker-compose.yml ] || cat > docker-compose.yml << 'YML_EOF'
+[ -f docker-compose.yml ] && echo -e "\n> File 'docker-compose.yml' already exists\n" || { cat > docker-compose.yml << 'YML_EOF'
 services:
   db:
     image: mysql:8.0
@@ -210,19 +221,130 @@ services:
     networks:
       - wordpress_net
 
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: mailpit_app
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${MAILPIT_UI_PORT:-8025}:8025"
+      - "127.0.0.1:${MAILPIT_SMTP_PORT:-1025}:1025"
+    environment:
+      MP_MAX_MESSAGES: ${MP_MAX_MESSAGES:-5000}
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: ${MP_SMTP_AUTH_ACCEPT_ANY:-1}
+      MP_SMTP_AUTH_ALLOW_INSECURE: ${MP_SMTP_AUTH_ALLOW_INSECURE:-1}
+    volumes:
+      - mailpit_data:/data
+    networks:
+      - wordpress_net
+
 volumes:
   db_data:
   wp_data:
+  mailpit_data:
 
 networks:
   wordpress_net:
     driver: bridge
 YML_EOF
 
-echo -e "> Run this to start containers : dvwa;bwapp;httpb;wpsql && sudo updatedb;echo;dp;echo;nnl"
+echo -e "\n> Created 'docker-compose.yml' file\n"
+}
+
+echo -e "\n[+] BOOTSTRAPPING WORDPRESS & WP MAIL SMTP \n"
+
+CONFIGURED=true
+
+# Initiate Wordpress from Docker compose
+if [ -f ~/wordpress/docker-compose.yml ]; then
+    echo -e "> Removing existing data to avoid conflicts..."
+    sudo docker compose -f ~/wordpress/docker-compose.yml down -v
+fi
+sudo docker compose -f ~/wordpress/docker-compose.yml up -d
+echo -e "\n> Waiting for WordPress container to become ready..."
+WP_READY=false
+for i in {1..90}; do
+    if sudo docker exec wordpress_app \
+        test -f /var/www/html/wp-includes/version.php 2>/dev/null; then
+        WP_READY=true
+        break
+    fi
+    sleep 2
+done
+if [ "$WP_READY" != true ]; then
+    CONFIGURED=false; echo -e \n"[!] WordPress failed to become ready within 180 seconds\n"
+else
+    echo -e "WordPress container is ready!\n"
+fi
+
+echo -e "> Installing WP-CLI inside the container if not already present..."
+{ sudo docker exec wordpress_app bash -c "
+    if [ ! -f /usr/local/bin/wp ]; then
+        curl -fsSL \
+        https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+        -o /tmp/wp-cli.phar
+        chmod +x /tmp/wp-cli.phar
+        mv /tmp/wp-cli.phar /usr/local/bin/wp
+    fi
+" && echo -e "Done\n"; } || { CONFIGURED=false; echo -e "\n[!] An error occured!\n"; }
+
+echo -e "> Running WordPress core installation (skips if already installed)"
+{ sudo docker exec -u www-data wordpress_app bash -c "
+    if ! wp core is-installed 2>/dev/null; then
+        wp core install \
+        --url='http://localhost:8050' \
+        --title='Ko0ler Lab - Wordpress' \
+        --admin_user='admin' \
+        --admin_password='Ch@nge_tHis_str0ng_ro0T_pasSWorD' \
+        --admin_email='admin@kooler.local' \
+        --skip-email
+    fi
+"; } || { CONFIGURED=false; echo -e "\n[!] An error occurred!\n"; }
+
+echo -e "\n> Installing WP Mail SMTP and pre-configure Mailpit\n"
+{ sudo docker exec -u www-data wordpress_app bash -c "
+    export WP_CLI_CACHE_DIR=/tmp/wp-cli-cache
+    wp plugin install wp-mail-smtp --activate
+    wp option update wp_mail_smtp '{
+        \"mail\": {
+        \"from_email\": \"wordpress@kooler.local\",
+        \"from_name\": \"Ko0ler Lab - Wordpress\",
+        \"mailer\": \"smtp\",
+        \"return_path\": false,
+        \"from_email_force\": true,
+        \"from_name_force\": true
+        },
+        \"smtp\": {
+        \"host\": \"mailpit\",
+        \"port\": 1025,
+        \"encryption\": \"none\",
+        \"autotls\": false,
+        \"auth\": false,
+        \"user\": \"\",
+        \"pass\": \"\"
+        }
+    }' --format=json
+" && echo -e "Done\n"; } || { CONFIGURED=false; echo -e "\n[!] An error occured!"\n; }
+
+[ "$CONFIGURED" != true ] && echo "> WordPress and WP Mail SMTP configuration failed. Some errors occured!\n" || echo "> WordPress and WP Mail SMTP configured\n"
+
+echo -e "\n[+] REMOVING CREATED CONTAINERS AND CLEAN UP\n"
+{
+sudo docker stop wordpress_app wordpress_db mailpit_app
+sudo docker rm wordpress_app wordpress_db mailpit_app
+echo -e "\nDone"
+} || { echo -e "\n[!] An error occurred!\n"; }
 
 echo -e "
-#-------------------------------------------------------------------------------
-# SETUP COMPLETE
-#-------------------------------------------------------------------------------
+
+---------------------------------------
+ SETUP COMPLETED... HAPPY HACKING !!!
+---------------------------------------
+
+> Run the following command to reload the environment and create new vulnerable containers (deletes currently running ones)
+
+----
+{ source ~/.bashrc && { dsf; drf; } 2>/dev/null; fullweb && echo && dp && echo && nnl; } || { echo -e '\\\n[!] An error occurred!'; }
+----
+
 "
