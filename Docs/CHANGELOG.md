@@ -33,14 +33,23 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [2026-11-10]
 
 ### Added
-- ACL allow rule on the firewall to allow port `4444` for `DMZ -> Attack host` for reverse shell conveniance according to the setup scripts default values
+- ACL allow rule on the firewall to allow port `4444` for `DMZ -> Attack host` for reverse shell convenience, according to the setup scripts' default values
 
 ### Tests and Issues
-- Attack Host reachable on port 4444 from DMZ and `Command injection` works on DVWA, but can't to get a reverse shell
+- Attack Host is reachable on port 4444 from DMZ and `Command injection` works on DVWA, but can't get a reverse shell
 
 ## [2026-11-13]
 
 ### Added
 - README files for both attack (Kali) and target host (Ubuntu)
-- Target host now include a docker based Wordpress webapp (latest version), along with MySQL 8.0
-- ACL allow rule on the firewall on port `8050` for the wordpress webapp
+- Target host now includes a Docker-based WordPress web app (latest version), along with MySQL 8.0
+- ACL allow rule on the firewall on port `8050` for the WordPress web app
+
+## [2026-11-16]
+
+### Added
+- Bootstrapping WordPress and Mailpit for auto-config and auto-binding on Ubuntu auto-setup script
+
+### Fixed
+- Remove hardcoded target values on attack host setup script
+- Update WordPress installation script URLs and error messages on target host setup script
