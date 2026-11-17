@@ -70,9 +70,9 @@ alias sp='ssc;ppp'
 
 #Path
 
-ws='/mnt/hgfs/Share-Pentest Lab'
-shp='/mnt/hgfs/Share-Pentest Lab/shares'
-shv='/mnt/hgfs/Share-VM/'
+#ws='/mnt/hgfs/Share-Pentest Lab'
+#shp='/mnt/hgfs/Share-Pentest Lab/shares'
+#shv='/mnt/hgfs/Share-VM/'
 
 # FUNCTIONS
 
@@ -170,7 +170,7 @@ MYSQL_USER=wordpress_user
 MYSQL_PASSWORD=$(openssl rand -hex 16)
 WORDPRESS_PORT=8050
 WP_ADMIN_USER=admin
-WP_ADMIN_PASSWORD=$(openssl rand -hex 12)
+WP_ADMIN_PASSWORD=$(openssl rand -hex 16)
 MAILPIT_UI_PORT=8025
 MAILPIT_SMTP_PORT=1025
 MP_MAX_MESSAGES=5000
@@ -289,17 +289,21 @@ echo -e "> Installing WP-CLI inside the container if not already present..."
 " && echo -e "Done\n"; } || { CONFIGURED=false; echo -e "\n[!] An error occured!\n"; }
 
 echo -e "> Running WordPress core installation (skips if already installed)"
-{ sudo docker exec -u www-data wordpress_app bash -c "
+# Temporarily load .env in a subshell to use the admin values
+{ (
+set -a
+source ~/wordpress/.env
+set +a
+sudo docker exec -u www-data wordpress_app bash -c "
     if ! wp core is-installed 2>/dev/null; then
         wp core install \
         --url='http://10.10.3.3:8050' \
-        --title='Ko0ler Lab - Wordpress' \
-        --admin_user='admin' \
-        --admin_password='Ch@nge_tHis_str0ng_ro0T_pasSWorD' \
-        --admin_email='admin@kooler.local' \
-        --skip-email
+        --title='Ko0ler Lab - WordPress' \
+        --admin_user='$WP_ADMIN_USER' \
+        --admin_password='$WP_ADMIN_PASSWORD' \
+        --admin_email='admin@kooler.local'
     fi
-"; } || { CONFIGURED=false; echo -e "\n[!] An error occurred!"; }
+"); } || { CONFIGURED=false; echo -e "\n[!] An error occurred!"; }
 
 echo -e "\n> Installing WP Mail SMTP and pre-configure Mailpit\n"
 { sudo docker exec -u www-data wordpress_app bash -c "
@@ -308,7 +312,7 @@ echo -e "\n> Installing WP Mail SMTP and pre-configure Mailpit\n"
     wp option update wp_mail_smtp '{
         \"mail\": {
         \"from_email\": \"wordpress@kooler.local\",
-        \"from_name\": \"Ko0ler Lab - Wordpress\",
+        \"from_name\": \"Ko0ler Lab - WordPress\",
         \"mailer\": \"smtp\",
         \"return_path\": false,
         \"from_email_force\": true,
