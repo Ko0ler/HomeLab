@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # --- System Update and Base Tools ---
 echo -e "\n[+] UPDATING SYSTEM \n"
@@ -42,7 +43,9 @@ alias t='tree -L 1'
 alias tt='tree -L 2'
 alias cl='clear'
 alias sc='source ~/.zshrc'
-alias ssc='sc; clear'
+alias spp='sc;echo;pp'
+alias ssc='sc;cl'
+alias sp='ssc;ppp'
 
 # ALIASES: Networking
 alias h='hostname -I'
@@ -134,9 +137,9 @@ webscan() {
 
 ########## END CUSTOM SETUP ##########
 EOF
-    echo -e "\n[+] .ZSHRC UPDATED \n"
+    echo -e "\n[+] ZSHRC UPDATED \n"
 else
-    echo -e "\n[+] .ZSHRC ALREADY CONFIGURED \n"
+    echo -e "\n[+] ZSHRC ALREADY CONFIGURED \n"
 fi
 
 # --- TMUX Configuration ---
@@ -175,7 +178,13 @@ fi
 echo -e "\n[+] FINALIZING SETUP\n"
 sudo updatedb &>/dev/null
 echo -e "
-#-------------------------------------------------------------------------------
-# SETUP COMPLETE
-#-------------------------------------------------------------------------------
+---------------------------------------
+ SETUP COMPLETED... HAPPY HACKING !!!
+---------------------------------------
+
+> Run the following command to check target and get started
+
+----
+{ source ~/.zshrc && sp; } || { echo -e '\\\n[!] An error occurred!'; }
+----
 "
