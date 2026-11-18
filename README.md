@@ -53,7 +53,7 @@ HomeLab/
    cd HomeLab
    ```
 2. **Build the topology in GNS3.** Recreate the nodes and links from `Docs/Topology.png`, using the [addressing table](#network-topology--addressing) below.
-3. **Apply the appliance configs** from `Configs/Appliance/`, in this order: `SW-L3.cfg`, `L2-SW-1.cfg`, `L2-SW-2.cfg`, `Router.cfg`, then `FW.cfg`. Open each file and review it first. Replace any value specific to your environment, then paste it into the node console.
+3. **Apply the appliance configs** from `Configs/Appliance/`, in this order: `SW-L3.cfg`, `L2-SW-1.cfg`, `L2-SW-2.cfg`, `Router.cfg`, then `FW.cfg`. Open each file and review it first. Replace any values specific to your environment, then paste it into the node console.
 4. **Prepare the VMs:**
    - Attack host (Kali): run `Configs/VM/Attack Host/InitialSetup.sh`. See its [README](Configs/VM/Attack%20Host/README.md).
    - Target host (Ubuntu, DMZ): run `Configs/VM/Ubuntu/InitialSetup.sh`. See its [README](Configs/VM/Ubuntu/README.md).
@@ -107,8 +107,8 @@ ASAv is licensed under Smart Licensing Using Policy, running in Evaluation Mode 
 | Host / Resources | OS / Build | Hostname | IP / VLAN | Services |
 | --- | --- | --- | --- | --- |
 | Kali (1 CPU, 8 Cores, 4/80GB) | Kali Linux 2026.2 (VMware amd64) | Kali | 192.168.160.130 (outside segment) | Attacker platform |
-| Ubuntu (1 CPU, 2 Cores, 3/60GB) | Ubuntu Desktop 26.04 | ko0ler-VMware-Virtual-Platform | 10.10.2.1 (DMZ) | WordPress, DVWA, bWAPP, httpbin, FTP, Samba, MySQL |
-| WindowsServer 2025 (1 CPU, 4 Cores, 4/60GB) | Windows Server 2025 | DC01 | 192.168.50.10 (VLAN 50) | ADCS, ADDS, DHCP, DNS, MSSQL — domain controller for kooler.local |
+| Ubuntu (1 CPU, 2 Cores, 3/60GB) | Ubuntu Desktop 26.04 | ko0ler-VMware-Virtual-Platform | 10.10.2.1 (DMZ) | WordPress stack, DVWA, bWAPP, httpbin |
+| Windows Server 2025 (1 CPU, 4 Cores, 4/60GB) | Windows Server 2025 | DC01 | 192.168.50.10 (VLAN 50) | ADCS, ADDS, DHCP, DNS, MSSQL — domain controller for kooler.local |
 | Windows 10 (1 CPU, 2 Cores, 4/60GB) | Windows 10 | PC1 | DHCP (VLAN 40) | Domain-joined workstation |
 | PC-A | VPCS | — | VLAN 50 (.15) | — |
 | PC-B | VPCS | — | VLAN 40 (.15) | — |
@@ -119,7 +119,7 @@ VPCS are mainly used for connectivity testing. I created setup scripts for the a
 
 ## Active Directory (kooler.local)
 
-Domain controller: **DC01** (Windows Server 2025, 192.168.50.10), running ADCS, ADDS, DHCP, DNS and MSSQL side by side — a deliberately over-provisioned DC for attack-surface practice (service account exposure, ADCS template misconfiguration, SQL on a DC, etc.).
+Domain controller: **DC01** (Windows Server 2025, 192.168.50.10), running ADCS, ADDS, DHCP, DNS, and MSSQL side by side — a deliberately over-provisioned DC for attack-surface practice (service account exposure, ADCS template misconfiguration, SQL on a DC, etc.).
 
 | Account | Scope | Notes |
 | --- | --- | --- |
