@@ -11,10 +11,10 @@ A single Bash script that turns a fresh Ubuntu VM (or any Debian distro) into a 
 | Stage | Action |
 |---|---|
 | 1. System | `apt update && apt upgrade` |
-| 2. Tools | Installs `open-vm-tools-desktop`, `build-essential`, `docker-ce docker-ce-cli`, `containerd.io`, `docker-buildx-plugin`, `docker-compose-plugin`, `gedit`, `net-tools`, `netcat-openbsd`, `btop`, `plocate`, `tree` |
+| 2. Tools | Installs `open-vm-tools-desktop`, `build-essential`, `docker-ce docker-ce-cli`, `containerd.io`, `docker-buildx-plugin`, `docker-compose-plugin`, `gedit`, `net-tools`, `netcat-openbsd`, `wireshark`, `btop`, `plocate`, `tree` |
 | 3. Shell config | Appends a `CUSTOM SETUP` block to `~/.bashrc` (skipped if already present) |
 | 4. Images | Pulls the DVWA, bWAPP, httpbin, Mailpit, and WordPress images |
-| 5. WordPress lab | Creates `~/wordpress/` with a `.env` (randomly generated database passwords) and a `docker-compose.yml` (WordPress + MySQL 8.0 + Mailpit). Existing files are kept |
+| 5. WordPress lab | Creates `~/wordpress/` with a `.env` (randomly generated database passwords) and a `docker-compose.yml` (WordPress + MySQL 8.0 + Mailpit). Existing files are overwritten to avoid data conflicts |
 | 6. Bootstrap | WordPress auto-install and Mailpit binding. Resets any previous WordPress stack (`docker compose down -v`), starts the stack, waits until WordPress is ready, installs WP-CLI inside the container, runs `wp core install`, then installs **WP Mail SMTP** and points it to Mailpit |
 | 7. Cleanup | Stops and removes created containers in the process (the WordPress stack from `docker-compose.yml`) so you start from a clean state (named volumes are kept). Start everything again with `fullweb` |
 
