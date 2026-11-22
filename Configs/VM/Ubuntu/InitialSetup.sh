@@ -7,7 +7,7 @@ echo -e "\n[+] UPDATING SYSTEM \n"
 sudo apt update && sudo apt upgrade -y && echo -e "\n[+] UPDATE DONE \n"
 
 echo -e "\n[+] INSTALLING ESSENTIAL TOOLS \n"
-sudo apt install -y open-vm-tools-desktop build-essential gedit net-tools netcat-openbsd btop plocate tree docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 
+sudo apt install -y open-vm-tools-desktop build-essential gedit net-tools netcat-openbsd wireshark btop plocate tree docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 
 echo -e "\n[+] INSTALLATION DONE \n"
 
 # --- BASH Configuration ---
@@ -68,8 +68,7 @@ alias spp='sc;echo;pp'
 alias ssc='sc;cl'
 alias sp='ssc;ppp'
 
-#Path
-
+#Paths
 #ws='/mnt/hgfs/Share-Pentest Lab'
 #shp='/mnt/hgfs/Share-Pentest Lab/shares'
 #shv='/mnt/hgfs/Share-VM/'
@@ -162,8 +161,9 @@ sudo docker pull wordpress:latest
 
 echo -e "\n[+] SETTING VULNERABLE WEBSERVER \nLatest Wordpress, MySQL 8.0 and latest Mailpit"
 
+echo -e "\n> Creating '.env' file"
 mkdir -p ~/wordpress && cd ~/wordpress
-[ -f .env ] && echo -e "\n> File '.env' already exists" || { umask 077; cat > .env << ENV_EOF
+umask 077; cat > .env << ENV_EOF
 MYSQL_ROOT_PASSWORD=$(openssl rand -hex 16)
 MYSQL_DATABASE=wordpress
 MYSQL_USER=wordpress_user
@@ -177,11 +177,10 @@ MP_MAX_MESSAGES=5000
 MP_SMTP_AUTH_ACCEPT_ANY=1
 MP_SMTP_AUTH_ALLOW_INSECURE=1
 ENV_EOF
+echo -e "> Done\n"
 
-echo -e "\n> Created '.env' file"
-}
-
-[ -f docker-compose.yml ] && echo -e "\n> File 'docker-compose.yml' already exists\n" || { cat > docker-compose.yml << 'YML_EOF'
+echo -e "> Creating 'docker-compose.yml' file"
+cat > docker-compose.yml << 'YML_EOF'
 services:
   db:
     image: mysql:8.0
@@ -247,9 +246,7 @@ networks:
   wordpress_net:
     driver: bridge
 YML_EOF
-
-echo -e "\n> Created 'docker-compose.yml' file\n"
-}
+echo -e "> Done\n"
 
 echo -e "\n[+] BOOTSTRAPPING WORDPRESS & WP MAIL SMTP \n"
 
@@ -261,7 +258,7 @@ if [ -f ~/wordpress/docker-compose.yml ]; then
     sudo docker compose -f ~/wordpress/docker-compose.yml down -v
 fi
 sudo docker compose -f ~/wordpress/docker-compose.yml up -d
-echo -e "\n> Waiting for WordPress container to become ready..."
+echo -e "\n> Waiting for WordPress containers to become ready..."
 WP_READY=false
 for i in {1..90}; do
     if sudo docker exec wordpress_app \
